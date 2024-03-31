@@ -49,9 +49,8 @@ namespace Autodesk.ProductInterface.PowerMILLTest.CollectionTests
         public void CreateNCProgram()
         {
             _powerMILL.ActiveProject.NCPrograms.CreateNCProgram("321");
-            _powerMILL.Execute("bool exists = entity_exists('ncprogram', '321')");
             Assert.AreEqual("1",
-                            _powerMILL.ExecuteEx("PRINT $exists"),
+                            _powerMILL.GetPowerMillParameter("entity_exists('ncprogram', '321')"),
                             "An NC program with name '321' was expected, but does not exist.");
         }
 

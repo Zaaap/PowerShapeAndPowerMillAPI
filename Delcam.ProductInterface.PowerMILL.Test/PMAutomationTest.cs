@@ -86,11 +86,11 @@ namespace Autodesk.ProductInterface.PowerMILLTest
         {
             _powerMill.Execute(string.Format("PROJECT OPEN {0}", Files.TestFiles.SimplePmProject1.Path));
             Assert.AreEqual("SimpleProject1",
-                            _powerMill.ExecuteEx(@"PRINT PAR terse ""project_pathname(1)"""),
+                            _powerMill.GetPowerMillParameter("project_pathname(1)"),
                             "Expected project to have been opened.");
             _powerMill.CloseProject();
             Assert.AreEqual(string.Empty,
-                            _powerMill.ExecuteEx(@"PRINT PAR terse ""project_pathname(1)"""),
+                            _powerMill.GetPowerMillParameter("project_pathname(1)"),
                             "Expected project to have been closed.");
         }
 
@@ -98,8 +98,7 @@ namespace Autodesk.ProductInterface.PowerMILLTest
         public void RunMacro()
         {
             _powerMill.RunMacro(Files.TestFiles.MacroCreateNcProgram);
-            var ncprograms = _powerMill.ExecuteEx("PRINT ENTITY NCPROGRAM").ToString().Split('\r');
-            Assert.AreEqual(2, ncprograms.Count(), "Expected macro to run, creating an NC program.");
+            Assert.AreEqual("1", _powerMill.GetPowerMillParameter("size(folder('ncprogram'))").Trim(), "Expected macro to run, creating an NC program.");
         }
 
         [Ignore("Fail on Build Server")]
